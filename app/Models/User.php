@@ -2,15 +2,23 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable([
+    'name',
+    'email',
+    'password',
+    'role',
+    'nim',
+    'nidn',
+])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable
 {
@@ -28,5 +36,61 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
+
+    /**
+     * Relasi mahasiswa dengan skripsi.
+     * Satu mahasiswa memiliki satu skripsi.
+     */
+    public function skripsiMahasiswa(): HasOne
+    {
+        return $this->hasOne(Skripsi::class, 'mahasiswa_id');
+    }
+
+    /**
+     * Relasi dosen dengan skripsi.
+     * Satu dosen dapat membimbing banyak mahasiswa.
+     */
+    public function skripsiBimbingan(): HasMany
+    {
+        return $this->hasMany(Skripsi::class, 'dosen_id');
+    }
+
+    /**
+     * Riwayat progres yang dibuat oleh pengguna.
+     */
+    public function progresDibuat(): HasMany
+    {
+        return $this->hasMany(Progres::class, 'user_id');
+    }
+
+    /**
+     * Komentar yang dikirim oleh pengguna.
+     */
+    public function komentarDikirim(): HasMany
+    {
+        return $this->hasMany(Komentar::class, 'pengirim_id');
+    }
+
+    /**
+     * Riwayat revisi yang diberikan oleh dosen.
+     */
+    public function revisiDiberikan(): HasMany
+    {
+        return $this->hasMany(RiwayatRevisi::class, 'dosen_id');
+    }
+
+    /**
+     * Riwayat aktivitas pengguna.
+     */
+    public function aktivitas(): HasMany
+    {
+        return $this->hasMany(Aktivitas::class, 'user_id');
     }
 }
