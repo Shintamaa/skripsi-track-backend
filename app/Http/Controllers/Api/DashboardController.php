@@ -16,7 +16,7 @@ class DashboardController extends Controller
     // Nilai status di database. Cocokkan dengan migration kalau berbeda.
     private const TAHAPAN_SELESAI = 'selesai';
     private const REVIEW_MENUNGGU = 'menunggu';
-    private const REVIEW_REVISI = 'revisi';
+    private const REVIEW_REVISI = 'perlu_revisi';
 
     public function index(Request $request)
     {

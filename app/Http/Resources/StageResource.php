@@ -17,6 +17,9 @@ class StageResource extends JsonResource
             'target_date' => $this->target_tanggal,
             'completed_at' => $this->tanggal_selesai,
             'status' => $this->status,
+            'submissions_count' => $this->submissions_count ?? null,
+            'submissions' => SubmissionResource::collection($this->whenLoaded('progres')),
+            'thesis' => new ThesisResource($this->whenLoaded('skripsi')),
         ];
     }
 }

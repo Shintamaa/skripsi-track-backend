@@ -125,7 +125,7 @@ class ThesisController extends Controller
             'description' => ['sometimes', 'nullable', 'string'],
             'start_date' => ['sometimes', 'nullable', 'date'],
             'target_date' => ['sometimes', 'nullable', 'date'],
-            'status' => ['sometimes', 'string', 'max:50'],
+            'status' => ['sometimes', Rule::in(['berjalan', 'selesai', 'ditunda'])],
         ]);
 
         $map = [
