@@ -6,6 +6,7 @@ use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -38,6 +39,13 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    protected $appends = ['nim_nidn'];
+
+protected function nimNidn(): Attribute
+{
+    return Attribute::get(fn () => $this->nim ?? $this->nidn);
+}
 
     /*
     |--------------------------------------------------------------------------
